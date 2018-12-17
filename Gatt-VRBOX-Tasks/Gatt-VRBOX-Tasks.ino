@@ -39,13 +39,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "controller.h"
-#include "bt.h"
-#include "bt_trace.h"
-#include "bt_types.h"
-#include "btm_api.h"
-#include "bta_api.h"
-#include "bta_gatt_api.h"
+
+#include "esp_bt.h"
 #include "esp_gap_ble_api.h"
 #include "esp_gattc_api.h"
 #include "esp_gatt_defs.h"
@@ -412,7 +407,7 @@ static void gattc_profile_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_
           Serial.printf("GATT Opening Battery service: %d\n", profiles[BATTERY_PROFILE].gattc_if);
         #endif
         
-        esp_ble_gattc_open(profiles[BATTERY_PROFILE].gattc_if, profiles[BATTERY_PROFILE].remote_bda, true);
+        esp_ble_gattc_open(profiles[BATTERY_PROFILE].gattc_if, profiles[BATTERY_PROFILE].remote_bda, BLE_ADDR_TYPE_PUBLIC, true);
       }
       
       break;
@@ -579,7 +574,7 @@ static void esp_gap_cb(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *par
                 #ifdef VERBOSE
                   Serial.printf("GAP Opening HID service: %d\n", profiles[HID_PROFILE].gattc_if);
                 #endif
-                esp_ble_gattc_open(profiles[HID_PROFILE].gattc_if, scan_result->scan_rst.bda, true);
+                esp_ble_gattc_open(profiles[HID_PROFILE].gattc_if, scan_result->scan_rst.bda, BLE_ADDR_TYPE_PUBLIC, true);
               }
             }
           }
